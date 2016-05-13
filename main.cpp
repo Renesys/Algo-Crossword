@@ -6,7 +6,7 @@
 vector<string>* dict = new vector<string>[35];
 ifstream file;
 
-//´Ü¾î»çÀü »ı¼º ÇÔ¼ö
+//ë‹¨ì–´ì‚¬ì „ ìƒì„± í•¨ìˆ˜
 void makeWordbook(){
 	int numWord;
 	string word;
@@ -25,11 +25,11 @@ int fillMap(Map& m, QuizSet& qs, int index, int cnt){
 	string beforeState = m.makeStr(qs.quizSet[index]);
 	int cleared = 0;
 
-	//´Ü¾îÀå Ã³À½ºÎÅÍ ³¡±îÁö Å½»öÇÏ¸é¼­ ¸Ê¿¡ ¸Â´Â ´Ü¾î °Ë»ö
+	//ë‹¨ì–´ì¥ ì²˜ìŒë¶€í„° ëê¹Œì§€ íƒìƒ‰í•˜ë©´ì„œ ë§µì— ë§ëŠ” ë‹¨ì–´ ê²€ìƒ‰
 	for (int it = 0; it < dict[len].size(); it++){
 		string word = dict[len][it];
 		if (qs.quizSet[index].matchStr(beforeState, word)){
-			cout << index << "¹ø ´Ü¾î : " << word << endl;
+			cout << index << "ë²ˆ ë‹¨ì–´ : " << word << endl;
 			m.putStr(qs.quizSet[index], word);
 			qs.quizSet[index].fill = true;
 			if (cleared = fillMap(m, qs, qs.selectNextQuiz(index), cnt + 1)){
@@ -37,11 +37,11 @@ int fillMap(Map& m, QuizSet& qs, int index, int cnt){
 			}
 		}
 	}
-	//¸¸¾à ÇÏ³ªµµ ¸Â´Â´Ü¾î°¡ ¾ø´Ù¸é Ã¤¿ü´ø ´Ü¾î¸¦ ºñ¿î´Ù.
+	//ë§Œì•½ í•˜ë‚˜ë„ ë§ëŠ”ë‹¨ì–´ê°€ ì—†ë‹¤ë©´ ì±„ì› ë˜ ë‹¨ì–´ë¥¼ ë¹„ìš´ë‹¤.
 	if (!cleared){
 		m.putStr(qs.quizSet[index], beforeState);
 		qs.quizSet[index].fill = false;
-		cout << index << "¹ø ½ÇÆĞ************************" << endl;
+		cout << index << "ë²ˆ ì‹¤íŒ¨************************" << endl;
 	}
 	return cleared;
 }
@@ -59,25 +59,11 @@ int main(void) {
 		Map m(file);
 		file >> hori >> vert;
 		QuizSet qs(file, m, hori, vert);
-		/*
-		for (int i = 0; i < 19; i++){
-			cout << i << "(" << qs.quizSet[i].row << ',' << qs.quizSet[i].col << ')' << "   |   ";
-			for (int j = 0; j < qs.quizSet[i].connected.size(); j++){
-				cout << qs.quizSet[i].connected[j] << ' ';
-			}
-			cout << endl;
-		}
-		*/
 		time(&s);
 		fillMap(m, qs, 0, 1);
 		time(&f);
 
-		//cout << f - s << endl;
-
 		m.printMap();
-		//cout << qs.quizComplete();
-
-
 
 		m.~Map();
 		qs.~QuizSet();
